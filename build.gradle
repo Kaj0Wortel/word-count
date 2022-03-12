@@ -1,0 +1,81 @@
+//file:noinspection GroovyAssignabilityCheck
+plugins {
+    id 'io.franzbecker.gradle-lombok' version '5.0.0'
+    id 'java'
+    id 'application'
+}
+
+import io.franzbecker.gradle.lombok.task.DelombokTask
+
+group 'net.projecteuler'
+version '1.0'
+
+repositories {
+    mavenCentral()
+    // For including a local jar file:
+    flatDir {
+        dirs 'lib'
+    }
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+
+    compileOnly 'org.projectlombok:lombok:1.18.22'
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.22'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+mainClassName = 'com.ordina.word_count.Main'
+
+application {
+    mainClassName = "$mainClassName"
+}
+
+configurations {
+    compile
+}
+task delombok(type: DelombokTask, dependsOn: compileJava) {
+    ext.outputDir = file("$buildDir/delombok")
+    outputs.dir(outputDir)
+    sourceSets.main.java.srcDirs.each {
+        inputs.dir(it)
+        args(it, "-d", outputDir)
+    }
+    doFirst {
+        outputDir.deleteDir()
+    }
+}
+
+jar {
+    manifest {
+        attributes (
+                "Main-Class": "$mainClassName"
+        )
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+task zipSrc(type: Zip) {
+    classifier = 'src'
+    from sourceSets*.allSource
+}
+
+task export(type: Copy) {
+    dependsOn clean
+    dependsOn jar
+    dependsOn zipSrc
+    dependsOn javadoc
+
+    from 'build/libs', 'build/docs', 'build/distributions'
+    into 'build/export'
+}
