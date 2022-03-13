@@ -6,7 +6,7 @@ plugins {
 
 import io.franzbecker.gradle.lombok.task.DelombokTask
 
-group 'net.projecteuler'
+group 'com.ordina.word_count'
 version '1.0'
 
 compileJava {
