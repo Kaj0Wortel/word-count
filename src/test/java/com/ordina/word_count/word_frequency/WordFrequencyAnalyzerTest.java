@@ -28,7 +28,7 @@ public class WordFrequencyAnalyzerTest
 	@Test
 	public void highestFreqTest() {
 		for (var impl : impls) {
-			String text = "word\"word|notword word)WORD WoRd,Word&otherword,wordn word";
+			String text = "word\"word|notword word)WORD         WoRd,Word&otherword,wordn word";
 			assertEquals(7, impl.calculateHighestFrequency(text));
 			
 			text = "c c c a a b b b";
@@ -39,7 +39,7 @@ public class WordFrequencyAnalyzerTest
 	@Test
 	public void wordFreqTest() {
 		for (var impl : impls) {
-			String text = "word\"word|notword word)WORD WoRd,Word&otherword,wordn word";
+			String text = "word\"word|notword word)WORD         WoRd,Word&otherword,wordn word";
 			assertEquals(7, impl.calculateFrequencyForWord(text, "word"));
 			assertEquals(7, impl.calculateFrequencyForWord(text, "WoRd"));
 			assertEquals(7, impl.calculateFrequencyForWord(text, "WORD"));
@@ -58,7 +58,7 @@ public class WordFrequencyAnalyzerTest
 	@Test
 	public void mostFreqWordTest() {
 		for (var impl : impls) {
-			String text = "word\"word|notword word)WORD WoRd,Word&otherword,wordn word";
+			String text = "word\"word|notword word)WORD         WoRd,Word&otherword,wordn word";
 			List<WordFrequencyImpl> exp = new ArrayList<>();
 			
 			assertEquals(exp, impl.calculateMostFrequentNWords(text, 0));

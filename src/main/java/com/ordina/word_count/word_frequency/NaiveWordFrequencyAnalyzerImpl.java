@@ -20,7 +20,7 @@ public class NaiveWordFrequencyAnalyzerImpl
 	 * @return Converts the text to lowercase and split it into words.
 	 */
 	private static String[] prep(String text) {
-		return text.toLowerCase().split("[^a-zA-Z]");
+		return text.toLowerCase().split("[^a-zA-Z]+");
 	}
 
 	/**
