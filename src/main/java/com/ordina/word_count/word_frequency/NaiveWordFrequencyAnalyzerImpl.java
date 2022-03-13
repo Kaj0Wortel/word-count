@@ -2,12 +2,14 @@ package com.ordina.word_count.word_frequency;
 
 import com.ordina.word_count.WordFrequency;
 import com.ordina.word_count.WordFrequencyImpl;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import java.util.*;
 
 /**
  * Naive implementation of the {@link WordFrequencyAnalyzer} interface.
  */
+@ApplicationScoped
 public class NaiveWordFrequencyAnalyzerImpl
 		implements WordFrequencyAnalyzer {
 

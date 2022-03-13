@@ -1,14 +1,18 @@
-//file:noinspection GroovyAssignabilityCheck
 plugins {
     id 'io.franzbecker.gradle-lombok' version '5.0.0'
     id 'java'
-    id 'application'
+    id 'war'
 }
 
 import io.franzbecker.gradle.lombok.task.DelombokTask
 
 group 'net.projecteuler'
 version '1.0'
+
+compileJava {
+    targetCompatibility = '11'
+    sourceCompatibility = '11'
+}
 
 repositories {
     mavenCentral()
@@ -27,16 +31,12 @@ dependencies {
 
     testCompileOnly 'org.projectlombok:lombok:1.18.22'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
+
+    providedCompile 'jakarta.platform:jakarta.jakartaee-api:9.1.0'
 }
 
 test {
     useJUnitPlatform()
-}
-
-mainClassName = 'com.ordina.word_count.Main'
-
-application {
-    mainClassName = "$mainClassName"
 }
 
 configurations {
@@ -54,17 +54,6 @@ task delombok(type: DelombokTask, dependsOn: compileJava) {
     }
 }
 
-jar {
-    manifest {
-        attributes (
-                "Main-Class": "$mainClassName"
-        )
-    }
-    from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-    }
-}
-
 task zipSrc(type: Zip) {
     classifier = 'src'
     from sourceSets*.allSource
@@ -72,7 +61,7 @@ task zipSrc(type: Zip) {
 
 task export(type: Copy) {
     dependsOn clean
-    dependsOn jar
+    dependsOn war
     dependsOn zipSrc
     dependsOn javadoc
 
