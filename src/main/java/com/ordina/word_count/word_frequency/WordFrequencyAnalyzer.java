@@ -1,4 +1,6 @@
-package com.ordina.word_count;
+package com.ordina.word_count.word_frequency;
+
+import com.ordina.word_count.WordFrequency;
 
 import java.util.List;
 
